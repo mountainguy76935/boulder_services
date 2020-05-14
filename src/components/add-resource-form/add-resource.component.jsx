@@ -1,6 +1,6 @@
 import React from 'react';
 
-export const AddResource = () => {
+export const AddResource = (props) => {
     const [title, setTitle] = React.useState('');
     const [address, setAddress] = React.useState('');
     const [phone, setPhone] = React.useState('');
@@ -11,6 +11,24 @@ export const AddResource = () => {
         document.querySelector('.add-resource').reset()
     }
 
+    // const handleEdit = () => {
+    //     console.log('in edit', props)
+    //     // setTitle(props.location.data.title);
+    //     // setAddress(props.location.data.address);
+    //     // setPhone(props.location.data.phone);
+    //     // setUrl(props.location.data.url);
+    //     // setChecked(props.location.data.checked)
+    // }
+
+    // React.useEffect(() => {
+    //     if (!props.location.state) {
+    //         console.log('no edit') 
+    //         return;
+    //     } else {
+    //         handleEdit()
+    //     }
+    // }, [])
+
     const handleSubmit = (e) => {
         e.preventDefault()
         const data = {
@@ -18,9 +36,8 @@ export const AddResource = () => {
             address: address,
             phone: phone,
             url: url,
-            check: checked
+            checked: checked
         }
-        console.log(data)
         fetch('/', {
             method: "POST", 
             body: JSON.stringify(data),
@@ -30,7 +47,6 @@ export const AddResource = () => {
             })
             .then(res => res.json())
             .then(response => {
-                console.log(response)
                 if (response.msg) {
                     alert('approved!');
                     resetForm()
@@ -52,14 +68,14 @@ export const AddResource = () => {
 
     return(
             <form className='add-resource' onSubmit={handleSubmit} method="POST">
-                <label htmlFor="name">Organization Name</label>
-                    <input type='text' name='title' onChange={(e) => setTitle(e.target.value)}/>
+                <label htmlFor="title">Organization Name</label>
+                    <input type='text' name='title' placeholder={title} onChange={(e) => setTitle(e.target.value)}/>
                 <label htmlFor="address">Address</label>
-                    <input type='text' name='address' onChange={(e) => setAddress(e.target.value)}/>
+                    <input type='text' name='address' placeholder={address} onChange={(e) => setAddress(e.target.value)}/>
                 <label htmlFor="phone">Phone</label>
-                    <input type='text' name='phone' onChange={(e) => setPhone(e.target.value)}/>
+                    <input type='text' name='phone' placeholder={phone} onChange={(e) => setPhone(e.target.value)}/>
                 <label htmlFor="picture">Organization Picture URL</label>
-                    <input type='text' name='picture' onChange={(e) => setUrl(e.target.value)}/>
+                    <input type='text' name='picture' placeholder={url} onChange={(e) => setUrl(e.target.value)}/>
                 <div className='checks' onChange={(e) => setChecked({...checked, [e.target.name]: e.target.value})}>
                     {services.map((a,i) => {
                         return(
