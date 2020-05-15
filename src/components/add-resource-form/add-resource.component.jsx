@@ -5,58 +5,98 @@ export const AddResource = (props) => {
     const [address, setAddress] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const [url, setUrl] = React.useState('');
-    const [checked, setChecked] = React.useState({})
+    const [services, setServices] = React.useState([]);
+    const [id, setId] = React.useState('');
 
-    const resetForm = (e) => {
-        document.querySelector('.add-resource').reset()
+    const resetForm = () => {
+        document.querySelector('.add-resource').reset();
+        setTitle('')
+        setAddress('')
+        setPhone('')
+        setUrl('')
+        setServices([''])
+        props.handleUpdate()
     }
 
-    // const handleEdit = () => {
-    //     console.log('in edit', props)
-    //     // setTitle(props.location.data.title);
-    //     // setAddress(props.location.data.address);
-    //     // setPhone(props.location.data.phone);
-    //     // setUrl(props.location.data.url);
-    //     // setChecked(props.location.data.checked)
-    // }
+    const handleEdit = async () => {
+        await setTimeout(() => console.log(props), 100)
+        await setTitle(props.location.state.data.title);
+        await setAddress(props.location.state.data.address);
+        await setPhone(props.location.state.data.phone);
+        await setUrl(props.location.state.data.url);
+        await setServices(props.location.state.data.services);
+        await setId(props.location.state.data._id);
+        await console.log('1', services, props.location.state.data.services)
+    }
 
-    // React.useEffect(() => {
-    //     if (!props.location.state) {
-    //         console.log('no edit') 
-    //         return;
-    //     } else {
-    //         handleEdit()
-    //     }
-    // }, [])
+    React.useEffect(() => {
+        if (!props.location) {
+            console.log('no edit') 
+            return;
+        } else {
+            handleEdit()
+        }
+    }, [])
+
+    const handleChange = (e) => {
+        let newChecked = [...services];
+        let ind = newChecked.indexOf(e.target.name)
+        if (!e.target.checked) {
+            newChecked.splice(ind, 1)
+            setServices(newChecked)
+        } else {
+            setServices([...newChecked, e.target.name]);
+        }
+    }
 
     const handleSubmit = (e) => {
         e.preventDefault()
+        console.log('services', services)
         const data = {
             title: title,
             address: address,
             phone: phone,
             url: url,
-            checked: checked
+            services: services,
+            id: id
         }
-        fetch('/', {
-            method: "POST", 
-            body: JSON.stringify(data),
-            headers: {
-                'Content-Type': 'application/json',
-                }
-            })
-            .then(res => res.json())
-            .then(response => {
-                if (response.msg) {
-                    alert('approved!');
-                    resetForm()
-                }
-            })
-            .catch(err => console.log(err))
+        if (!props.location) {
+            fetch('/', {
+                method: "POST", 
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    }
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (response.msg) {
+                        alert('approved!');
+                        resetForm()
+                    }
+                })
+                .catch(err => console.log(err))
+        } else {
+            fetch('/edit-resource', {
+                method: "POST", 
+                body: JSON.stringify(data),
+                headers: {
+                    'Content-Type': 'application/json',
+                    }
+                })
+                .then(res => res.json())
+                .then(response => {
+                    if (response.msg) {
+                        alert('approved!');
+                        props.history.push('/admin-resources')
+                    }
+                })
+                .catch(err => console.log(err))
+        }
 
     }
 
-    const services = [
+    const servicesList = [
         'Housing', 
         'Medical Care', 
         'Mental Health Care', 
@@ -69,18 +109,23 @@ export const AddResource = (props) => {
     return(
             <form className='add-resource' onSubmit={handleSubmit} method="POST">
                 <label htmlFor="title">Organization Name</label>
-                    <input type='text' name='title' placeholder={title} onChange={(e) => setTitle(e.target.value)}/>
+                    <input type='text' name='title' value={title} onChange={(e) => setTitle(e.target.value)}/>
                 <label htmlFor="address">Address</label>
-                    <input type='text' name='address' placeholder={address} onChange={(e) => setAddress(e.target.value)}/>
+                    <input type='text' name='address' value={address} onChange={(e) => setAddress(e.target.value)}/>
                 <label htmlFor="phone">Phone</label>
-                    <input type='text' name='phone' placeholder={phone} onChange={(e) => setPhone(e.target.value)}/>
+                    <input type='text' name='phone' value={phone} onChange={(e) => setPhone(e.target.value)}/>
                 <label htmlFor="picture">Organization Picture URL</label>
-                    <input type='text' name='picture' placeholder={url} onChange={(e) => setUrl(e.target.value)}/>
-                <div className='checks' onChange={(e) => setChecked({...checked, [e.target.name]: e.target.value})}>
-                    {services.map((a,i) => {
+                    <input type='text' name='picture' value={url} onChange={(e) => setUrl(e.target.value)}/>
+                <div className='checks' onChange={handleChange}>
+                    {servicesList.map((a,i) => {
+                        let truthy = false;
+                        if (services) {
+                            truthy = services.includes(a) ? true : false;
+                        }
+                        console.log('what the hell', services, a, truthy)
                         return(
                         <React.Fragment key={i}>
-                            <input type='checkbox' name={a}/>
+                            <input type='checkbox' checked={truthy} name={a}/>
                                 <label htmlFor={`Service${i+1}`}>{a}</label>
                         </React.Fragment>
                         )

@@ -3,9 +3,15 @@ import { ResourceList } from '../components/resource-list/resource-list.componen
 import { AddResource } from '../components/add-resource-form/add-resource.component';
 
 export const AdminResourcePage = () => {
+    const [updated, setUpdated] = React.useState(false)
+    
+    const handleUpdate = () => {
+        setUpdated(true)
+    }
+
     return(
         <React.Fragment>
-            <AddResource />
+            <AddResource handleUpdate={handleUpdate}/>
             <ResourceList admin={true}/>
         </React.Fragment>
     )

@@ -11,14 +11,14 @@ const resourceSchema = new Schema({
         required: true
     },
     phone: {
-        type: Number,
+        type: String,
         required: true
     },
     url: {
         type: String,
         required: true
     },
-    checked: {
+    services: {
         type: Array,
         required: true
     }
