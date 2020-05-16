@@ -1,10 +1,8 @@
 import React from 'react';
 import './resource.styles.css'
-//import { useEffect } from 'react';
-import { Link } from 'react-router-dom'
+import { Link, withRouter } from 'react-router-dom'
 
-export const Resource = (props) => {
-    // useEffect(() => console.log(props.data), [])
+const Resource = (props) => {
 
     const handleDelete = (e) => {
         e.preventDefault()
@@ -22,7 +20,7 @@ export const Resource = (props) => {
             .then(response => {
                 if (response.msg) {
                     alert('Successfully Deleted!');
-                    props.history.push('/resources')
+                    props.history.push('/resources');
                 }
             })
             .catch(err => console.log(err))
@@ -33,6 +31,7 @@ export const Resource = (props) => {
             <h1>{props.data.title}</h1>
             <p>address: {props.data.address}</p>
             <p>phone: {props.data.phone}</p>
+            <a href={props.data.website}>Click to visit {props.data.name}</a>
             <img src={props.data.url} alt={props.data.title}/>
             <p>resources offered: {props.data.services.map(a => <span>{a} </span>)}</p>
             {props.admin ? 
@@ -53,3 +52,5 @@ export const Resource = (props) => {
         </div>
     )
 }
+
+export default withRouter(Resource)

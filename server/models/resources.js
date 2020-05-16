@@ -18,6 +18,10 @@ const resourceSchema = new Schema({
         type: String,
         required: true
     },
+    website: {
+        type: String,
+        required: true
+    },
     services: {
         type: Array,
         required: true

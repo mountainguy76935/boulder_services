@@ -10,12 +10,13 @@ exports.getResources = (req, res, next) => {
 }
 
 exports.postAddResource = (req, res, next) => {
-    const {title, address, phone, url, services} = req.body;
+    const {title, address, phone, url, services, website} = req.body;
     const resource = new Resource({
         title: title,
         address: address,
         phone: phone.split(/\D+/gi).join('').trim(),
         url: url,
+        website: website,
         services: services
     })
     resource
@@ -29,7 +30,7 @@ exports.postAddResource = (req, res, next) => {
 } 
 
 exports.postEditResource = (req, res, next) => {
-    const {title, address, phone, url, services, id} = req.body;
+    const {title, address, phone, url, services, website, id} = req.body;
     Resource
         .findById(id)
         .then(resource => {
@@ -37,7 +38,8 @@ exports.postEditResource = (req, res, next) => {
             resource.address = address;
             resource.url = url;
             resource.services = services;
-            resource.phone = phone
+            resource.phone = phone;
+            resource.website = website;
             return resource.save()
         })
         .then(() => {

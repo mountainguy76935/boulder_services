@@ -1,5 +1,5 @@
 import React from 'react';
-import { Resource } from '../resource/resource.component';
+import Resource from '../resource/resource.component';
 
 export const ResourceList = (props) => {
     const [data, setData] = React.useState([]);
@@ -7,9 +7,7 @@ export const ResourceList = (props) => {
 
     const getData = () => {
         fetch('/data/resources')
-                .then(response => {
-                    return response.json()
-                })
+                .then(response => response.json())
                 .then(newData => {
                     setData([...data, ...newData])
                 })
@@ -23,7 +21,7 @@ export const ResourceList = (props) => {
 
         return(
             <React.Fragment>
-                {data && loaded ? 
+                {data.length>0 && loaded ? 
                 data.map(a => {
                     return(
                         <div>

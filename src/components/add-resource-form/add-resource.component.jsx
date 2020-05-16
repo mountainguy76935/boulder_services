@@ -1,10 +1,12 @@
 import React from 'react';
+import { withRouter } from 'react-router-dom';
 
-export const AddResource = (props) => {
+const AddResource = (props) => {
     const [title, setTitle] = React.useState('');
     const [address, setAddress] = React.useState('');
     const [phone, setPhone] = React.useState('');
     const [url, setUrl] = React.useState('');
+    const [website, setWebsite] = React.useState('');
     const [services, setServices] = React.useState([]);
     const [id, setId] = React.useState('');
 
@@ -14,26 +16,26 @@ export const AddResource = (props) => {
         setAddress('')
         setPhone('')
         setUrl('')
+        setWebsite('')
         setServices([''])
         props.handleUpdate()
     }
 
     const handleEdit = async () => {
-        await setTimeout(() => console.log(props), 100)
         await setTitle(props.location.state.data.title);
         await setAddress(props.location.state.data.address);
         await setPhone(props.location.state.data.phone);
         await setUrl(props.location.state.data.url);
+        await setWebsite(props.location.state.data.website);
         await setServices(props.location.state.data.services);
         await setId(props.location.state.data._id);
-        await console.log('1', services, props.location.state.data.services)
     }
 
     React.useEffect(() => {
-        if (!props.location) {
-            console.log('no edit') 
+        if (!props.location.state) {
             return;
         } else {
+            console.log(props)
             handleEdit()
         }
     }, [])
@@ -51,16 +53,15 @@ export const AddResource = (props) => {
 
     const handleSubmit = (e) => {
         e.preventDefault()
-        console.log('services', services)
         const data = {
             title: title,
             address: address,
             phone: phone,
             url: url,
             services: services,
-            id: id
+            website: website
         }
-        if (!props.location) {
+        if (!props.location.state) {
             fetch('/', {
                 method: "POST", 
                 body: JSON.stringify(data),
@@ -72,11 +73,13 @@ export const AddResource = (props) => {
                 .then(response => {
                     if (response.msg) {
                         alert('approved!');
-                        resetForm()
+                        props.history.push('/resources')
                     }
                 })
                 .catch(err => console.log(err))
         } else {
+            console.log('here', props)
+            data.id = id;
             fetch('/edit-resource', {
                 method: "POST", 
                 body: JSON.stringify(data),
@@ -114,6 +117,8 @@ export const AddResource = (props) => {
                     <input type='text' name='address' value={address} onChange={(e) => setAddress(e.target.value)}/>
                 <label htmlFor="phone">Phone</label>
                     <input type='text' name='phone' value={phone} onChange={(e) => setPhone(e.target.value)}/>
+                <label htmlFor="website">Website</label>
+                    <input type='text' name='website' value={website} onChange={(e) => setWebsite(e.target.value)}/>
                 <label htmlFor="picture">Organization Picture URL</label>
                     <input type='text' name='picture' value={url} onChange={(e) => setUrl(e.target.value)}/>
                 <div className='checks' onChange={handleChange}>
@@ -122,7 +127,6 @@ export const AddResource = (props) => {
                         if (services) {
                             truthy = services.includes(a) ? true : false;
                         }
-                        console.log('what the hell', services, a, truthy)
                         return(
                         <React.Fragment key={i}>
                             <input type='checkbox' checked={truthy} name={a}/>
@@ -135,3 +139,5 @@ export const AddResource = (props) => {
             </form>
     )
 }
+
+export default withRouter(AddResource)
