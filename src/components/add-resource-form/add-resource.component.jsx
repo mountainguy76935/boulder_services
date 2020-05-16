@@ -10,25 +10,15 @@ const AddResource = (props) => {
     const [services, setServices] = React.useState([]);
     const [id, setId] = React.useState('');
 
-    const resetForm = () => {
-        document.querySelector('.add-resource').reset();
-        setTitle('')
-        setAddress('')
-        setPhone('')
-        setUrl('')
-        setWebsite('')
-        setServices([''])
-        props.handleUpdate()
-    }
-
-    const handleEdit = async () => {
-        await setTitle(props.location.state.data.title);
-        await setAddress(props.location.state.data.address);
-        await setPhone(props.location.state.data.phone);
-        await setUrl(props.location.state.data.url);
-        await setWebsite(props.location.state.data.website);
-        await setServices(props.location.state.data.services);
-        await setId(props.location.state.data._id);
+    const handleEdit = () => {
+        const { title, phone, address, url, website, services, _id } = props.location.state.data;
+        setTitle(title);
+        setAddress(address);
+        setPhone(phone);
+        setUrl(url);
+        setWebsite(website);
+        setServices(services);
+        setId(_id);
     }
 
     React.useEffect(() => {
