@@ -26,7 +26,7 @@ app.get('*', (req, res, next) => {
 
 mongoose
     .connect(
-        'mongodb+srv://HelloImTheUser:[***enter your pw here!!! I took it out for privacy or whatever :0***]@clusternode-rhosu.mongodb.net/boulderServices?retryWrites=true&w=majority',
+        'mongodb+srv://HelloImTheUser:MrDataDOOD30@clusternode-rhosu.mongodb.net/boulderServices?retryWrites=true&w=majority',
         {
             useNewUrlParser: true, 
             useUnifiedTopology: true
