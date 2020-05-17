@@ -2,6 +2,7 @@ const express = require('express');
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
 const adminRoutes = require('./server/routes/admin')
+const authRoutes = require('./server/routes/auth')
 const path = require('path')
 
 const app = express();
@@ -18,7 +19,9 @@ app.use((req, res, next) => {
     next();
 });
 
+app.use(authRoutes);
 app.use(adminRoutes);
+
 
 app.get('*', (req, res, next) => {
     res.sendFile(path.join(__dirname, 'build', 'index.html'))

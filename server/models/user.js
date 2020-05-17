@@ -2,7 +2,7 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
-    userName: {
+    username: {
         type:  String,
         required: true
     },
@@ -14,13 +14,21 @@ const userSchema = new Schema({
         type: String,
         required: true
     },
+    name: {
+        type:  String,
+        required: true
+    },
+    email: {
+        type: String,
+        required: true
+    },
     //same as checked in resource model
     likes: {
-        type: Array,
+        type: [],
         required: true
     },
     reviews: {
-        type: Array,
+        type: [],
         required: true
     }
 });

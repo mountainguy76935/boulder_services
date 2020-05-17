@@ -1,4 +1,5 @@
 import React from 'react';
+import { Form } from '../form/form.component';
 import { withRouter } from 'react-router-dom';
 
 const AddResource = (props) => {
@@ -68,7 +69,6 @@ const AddResource = (props) => {
                 })
                 .catch(err => console.log(err))
         } else {
-            console.log('here', props)
             data.id = id;
             fetch('/edit-resource', {
                 method: "POST", 
@@ -97,36 +97,56 @@ const AddResource = (props) => {
         'Veterans Services', 
         'Shelter', 
         'Food'
-    ]
+    ];
 
     return(
-            <form className='add-resource' onSubmit={handleSubmit} method="POST">
-                <label htmlFor="title">Organization Name</label>
-                    <input type='text' name='title' value={title} onChange={(e) => setTitle(e.target.value)}/>
-                <label htmlFor="address">Address</label>
-                    <input type='text' name='address' value={address} onChange={(e) => setAddress(e.target.value)}/>
-                <label htmlFor="phone">Phone</label>
-                    <input type='text' name='phone' value={phone} onChange={(e) => setPhone(e.target.value)}/>
-                <label htmlFor="website">Website</label>
-                    <input type='text' name='website' value={website} onChange={(e) => setWebsite(e.target.value)}/>
-                <label htmlFor="picture">Organization Picture URL</label>
-                    <input type='text' name='picture' value={url} onChange={(e) => setUrl(e.target.value)}/>
-                <div className='checks' onChange={handleChange}>
-                    {servicesList.map((a,i) => {
-                        let truthy = false;
-                        if (services) {
-                            truthy = services.includes(a) ? true : false;
-                        }
-                        return(
-                        <React.Fragment key={i}>
-                            <input type='checkbox' checked={truthy} name={a}/>
-                                <label htmlFor={`Service${i+1}`}>{a}</label>
-                        </React.Fragment>
-                        )
-                    })}
-                </div>
-                    <button type="submit">Submit Information</button>
-            </form>
+        <form className='add-resource' onSubmit={handleSubmit}>
+            <Form 
+                title='title' 
+                label="Organization Name" 
+                value={title} 
+                type="text" 
+                changeFunction = {setTitle}/>
+            <Form 
+                title='address' 
+                label="Address" 
+                value={address} 
+                type="text" 
+                changeFunction = {setAddress}/>
+            <Form 
+                title='phone' 
+                label="Phone" 
+                value={phone} 
+                type="text" 
+                changeFunction = {setPhone}/>
+            <Form 
+                title='website' 
+                label="Website" 
+                value={website} 
+                type="text" 
+                changeFunction = {setWebsite}/>
+            <Form 
+                title='picture' 
+                label="Organization Picture URL" 
+                value={url} 
+                type="text" 
+                changeFunction = {setUrl}/>
+            <div className='checks' onChange={handleChange}>
+                {servicesList.map((a,i) => {
+                    let truthy = false;
+                    if (services) {
+                        truthy = services.includes(a) ? true : false;
+                    }
+                    return(
+                    <React.Fragment key={i}>
+                        <input type='checkbox' checked={truthy} name={a}/>
+                            <label htmlFor={`Service${i+1}`}>{a}</label>
+                    </React.Fragment>
+                    )
+                })}
+            </div>
+                <button type="submit">Submit Information</button>
+        </form>
     )
 }
 

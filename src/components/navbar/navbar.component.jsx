@@ -13,6 +13,8 @@ export const NavBar = () => {
             <Link to='/admin-resources'>Admin Resources</Link>
             <br />
             <Link to='/login'>Login</Link>
+            <br />
+            <Link to='/register'>Register</Link>
         </div>
     )
 }
